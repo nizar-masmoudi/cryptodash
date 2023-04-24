@@ -15,26 +15,22 @@ class DashLayout(go.Layout):
     # Set transparent background
     self.paper_bgcolor = 'rgba(0, 0, 0, 0)'
     self.plot_bgcolor = 'rgba(0, 0, 0, 0)'
+    self.font = dict(
+      family = 'Poppins, sans-serif'
+    )
     self.margin = dict(l = 0, r = 0, t = 0, b = 0)
     self.xaxis = dict(
-      gridcolor = 'rgba(255, 255, 255, 0.2)',
-      griddash = 'dash',
-      color = 'rgba(255, 255, 255, 0.2)',
+      gridcolor = 'rgba(255, 255, 255, 0.1)',
+      color = 'rgba(255, 255, 255, .7)',
       linecolor = 'rgba(255, 255, 255, 0.2)',
       zeroline = False,
       fixedrange = True,
       mirror = True,
       showspikes = False,
-      # spikemode = 'across',
-      # spikesnap = 'data',
-      # spikethickness = 1,
-      # spikecolor = 'rgba(255, 255, 255, 0.2)',
-      # showline = True,
     )
     self.yaxis = dict(
-      gridcolor = 'rgba(255, 255, 255, 0.2)',
-      griddash = 'dash',
-      color = 'rgba(255, 255, 255, 0.2)',
+      gridcolor = 'rgba(255, 255, 255, 0.1)',
+      color = 'rgba(255, 255, 255, .7)',
       linecolor = 'rgba(255, 255, 255, 0.2)',
       zeroline = False,
       fixedrange = True,
@@ -80,7 +76,25 @@ class SparklineAIO(html.Span):
     datetimes = list(reversed([f'{t+1}h' for t in range(len(sparkline))]))
 
     super().__init__([
-      html.H2('Sparkline', className = 'text-2xl'),
-      html.Div(className = 'w-full h-px bg-white/10 my-6'),
-      dcc.Graph(figure = Sparkline(x = datetimes, y = sparkline, layout = DashLayout(), layout_yaxis_range = [floor(min(sparkline) / 100)*100, ceil(max(sparkline) / 100)*100]))
+      html.Span([
+        html.Img(src = coin['iconUrl'], className = 'w-14 h-14'),
+        html.Span([
+          html.P(coin['symbol'], className = 'text-white/30'),
+          html.H3(coin['name'], className = 'text-2xl font-semibold'),
+        ], className = 'flex flex-col justify-between w-56 h-16'),
+        html.Div(className = 'w-0.5 h-full bg-white/20'),
+        html.Span([
+          html.P('LIVE PRICE', className = 'text-white/30'),
+          html.Span([
+            html.H3('${:,.2f}'.format(float(coin['price'])), className = 'text-2xl font-semibold'),
+            html.Div([
+              html.Div([], className = 'w-0 h-0 border-l-[6px] border-l-transparent border-b-[10px] border-r-[6px] border-r-transparent -translate-y-px border-b-white {}'.format('rotate-0' if float(coin['change']) > 0 else 'rotate-180')),
+              html.P(coin['change'] + '%'),
+            ], className = 'flex items-center justify-around w-36 h-8 rounded-md p-2 {}'.format('bg-[#26c363]' if float(coin['change']) > 0 else 'bg-red-600'))
+          ], className = 'flex items-center space-x-4'),
+        ], className = 'flex flex-col justify-between w-56 h-16'),
+      ], className = 'flex items-center space-x-4 h-14'),
+      html.Div([
+        dcc.Graph(figure = Sparkline(x = datetimes, y = sparkline, layout = DashLayout(), layout_yaxis_range = [floor(min(sparkline) / 100)*100, ceil(max(sparkline) / 100)*100]))
+      ], className = 'bg-[#171821] rounded-lg p-6 mt-12 border-[1px] border-white/20'),
     ], className = 'w-full h-full')
