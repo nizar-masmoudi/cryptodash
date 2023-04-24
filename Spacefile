@@ -6,9 +6,9 @@ micros:
     engine: python3.9
     primary: true
     run: python app.py
-    presets:
-      env:
-        - name: RAPID_API_KEY
-          default: "55add96f10msh5134a9505f7a1b6p189066jsna4ae3feb346f"
-        - name: RAPID_API_HOST
-          default: "coinranking1.p.rapidapi.co"
+    # presets:
+    #   env:
+    #     - name: RAPID_API_KEY
+    #       default: "55add96f10msh5134a9505f7a1b6p189066jsna4ae3feb346f"
+    #     - name: RAPID_API_HOST
+    #       default: "coinranking1.p.rapidapi.co"
