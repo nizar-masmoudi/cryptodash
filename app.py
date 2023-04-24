@@ -1,5 +1,10 @@
 from dash import Dash, html
 from components import SidebarAIO, HeaderAIO, AutoCompleteAIO, IndicatorAIO, TableAIO, SparklineAIO, MenuAIO
+import argparse
+
+parser = argparse.ArgumentParser(prog = 'CryptoDash', description = 'A dashboard for tracking cryptocurrency prices.')
+parser.add_argument('--debug', action = 'store_true')
+args = parser.parse_args()
 
 app = Dash(__name__, external_scripts = ['https://cdn.tailwindcss.com'])
 
@@ -27,4 +32,4 @@ app.layout = html.Div([
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug = args.debug)
