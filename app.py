@@ -1,5 +1,5 @@
 from dash import Dash, html
-from components import SidebarAIO, HeaderAIO, AutoCompleteAIO, IndicatorAIO, TableAIO, SparklineAIO
+from components import SidebarAIO, HeaderAIO, AutoCompleteAIO, IndicatorAIO, TableAIO, SparklineAIO, MenuAIO
 
 app = Dash(__name__, external_scripts = ['https://cdn.tailwindcss.com'])
 
@@ -9,7 +9,8 @@ app.layout = html.Div([
   # Content
   html.Div([
     HeaderAIO([
-      AutoCompleteAIO(placeholder = 'Search for coins')
+      AutoCompleteAIO(placeholder = 'Search for coins'),
+      MenuAIO()
     ]),
     html.Span([
       html.Div([IndicatorAIO(coin_id = 'Qwsogvtv82FCd')], className = 'relative w-[calc(50%-12px)] h-48 bg-[#21222D] rounded-xl p-8'),
@@ -26,4 +27,4 @@ app.layout = html.Div([
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(debug = True)

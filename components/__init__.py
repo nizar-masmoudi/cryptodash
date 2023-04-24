@@ -4,3 +4,4 @@ from components.input import AutoCompleteAIO
 from components.indicator import IndicatorAIO
 from components.table import TableAIO
 from components.sparkline import SparklineAIO
+from components.menu import MenuAIO
