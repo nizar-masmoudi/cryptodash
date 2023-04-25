@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 body {
@@ -15,4 +19,26 @@ body::-webkit-scrollbar{
 /* Hide Plotly controls */
 .modebar{
   display: none !important;
+}
+
+.is-pseudo-focused > .Select-control, .is-open > .Select-control, .Select-control {
+  background-color: #171821;
+  border: none;
+  border-radius: 6px;
+  width: 14rem;
+  outline: none !important;
+}
+
+.Select-menu-outer {
+  background-color: #171821;
+  border: none;
+  overflow: hidden;
+}
+
+.Select-menu-outer::-webkit-scrollbar{
+  display: none;
+}
+
+.Select-value-label {
+  color: rgba(255, 255, 255, .4) !important;
 }
