@@ -59,6 +59,7 @@ class Sparkline(go.Figure):
         line = dict(color = 'rgba(38, 197, 100, .2)', width = 12)
       ),
       hovertemplate = '$%{y}<extra></extra>',
+      # fill = 'tozeroy'
       
     )
     super().__init__(data, layout, **kwargs)
@@ -141,15 +142,31 @@ class SparklineAIO(html.Span):
     # datetimes = []
     # today = datetime.today() - timedelta(hours = 1)
     # print(d.strftime('%H:%M %p'))
-
-    
-    if period in ['1h', '3h']:
-      datetimes = list(reversed([f'{(t+1)*5}min' for t in range(len(sparkline))]))
-    elif period in ['12h', '24h']:
-      datetimes = list(reversed([f'{t+1}h' for t in range(len(sparkline))]))
-    elif period in ['30d']:
-      datetimes = list(reversed([f'{t+1}d' for t in range(len(sparkline))]))
+    if period.endswith('m') or period.endswith('y'):
+      xs = list(reversed([f'{t+1}' for t in range(len(sparkline))]))
     else:
-      datetimes = list(reversed([f'{t+1}' for t in range(len(sparkline))]))
+      days = int(period[:-1]) if period.endswith('d') else 0
+      hours = int(period[:-1]) if period.endswith('h') else 0
+      delta = timedelta(days = days, hours = hours)
+      
+      xs = []
+      for i in range(1, len(sparkline) + 1):
+        digits = []
+        d = delta*i/len(sparkline)
+        if d.days: digits.append(str(d.days) + 'd')
+        if d.seconds//3600: digits.append(str(d.seconds//3600) + 'h')
+        if d.seconds%3600: digits.append(str((d.seconds%3600)//60) + 'min')
+        xs.append(', '.join(digits))
+      xs = xs[::-1]
     
-    return Sparkline(x = datetimes, y = sparkline, layout = DashLayout(), layout_yaxis_range = [floor(min(sparkline) / 100)*100, ceil(max(sparkline) / 100)*100])
+    # if period in ['1h', '3h']:
+    #   datetimes = list(reversed([f'{(t+1)*5}min' for t in range(len(sparkline))]))
+    # elif period in ['12h', '24h']:
+    #   datetimes = list(reversed([f'{t+1}h' for t in range(len(sparkline))]))
+    # # elif period in ['']
+    # elif period in ['30d']:
+    #   datetimes = list(reversed([f'{t+1}d' for t in range(len(sparkline))]))
+    # else:
+    #   datetimes = list(reversed([f'{t+1}' for t in range(len(sparkline))]))
+    
+    return Sparkline(x = xs, y = sparkline, layout = DashLayout(), layout_yaxis_range = [floor(min(sparkline) / 100)*100, ceil(max(sparkline) / 100)*100])
